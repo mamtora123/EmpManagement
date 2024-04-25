@@ -1,6 +1,24 @@
 ﻿@model IEnumerable<Employee>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Message = "Welcome To Employee Management System.";
+}
+
+@await Html.PartialAsync("_MessagePartial", Model)
+@if (ViewData["RemoveMessage"] != null)
+{
+    <div class="alert alert-info" role="alert">@ViewData["RemoveMessage"]</div>
+}
+
 <div class="text-center">
     <h1>Home</h1>
+
+    @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+    {
+        <div class="alert alert-success" role="alert">
+            @ViewBag.SuccessMessage
+        </div>
+    }
 
     <table class="table table-striped">
         <thead class="thead-dark">
@@ -33,12 +51,12 @@
         </tbody>
     </table>
 
-    
+
 
 </div>
 @section Scripts {
 
     <script src="~/js/Home.js"></script>
-   
+
 
 }

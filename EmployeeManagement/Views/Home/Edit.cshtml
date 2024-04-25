@@ -1,0 +1,73 @@
+﻿@model Employee
+
+@{
+    ViewBag.Title = "Edit Employee";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Ensure that the layout is set
+}
+
+<div class="container">
+    <h2>Edit Employee</h2>
+
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    <form method="post">
+        <!-- Form fields for editing employee details -->
+        <div class="form-group">
+            <label for="Name">Name:</label>
+            <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" />
+        </div>
+        <div class="form-group">
+            <label for="Email">Email:</label>
+            <input type="email" class="form-control" id="Email" name="Email" value="@Model.Email" />
+        </div>
+        <div class="form-group">
+            <label for="Department">Department:</label>
+            <select class="form-control" id="Department" name="Department">
+                @{
+                    string selectedDepartment = Model.Department.ToString();
+                    switch (selectedDepartment)
+                    {
+                        case "IT":
+                            <option value="IT" selected>IT</option>
+                            <option value="HR">HR</option>
+                            <option value="ClientService">Client Service</option>
+                            <option value="Sales">Sales</option>
+                            break;
+                        case "HR":
+                            <option value="IT">IT</option>
+                            <option value="HR" selected>HR</option>
+                            <option value="ClientService">Client Service</option>
+                            <option value="Sales">Sales</option>
+                            break;
+                        case "ClientService":
+                            <option value="IT">IT</option>
+                            <option value="HR">HR</option>
+                            <option value="ClientService" selected>Client Service</option>
+                            <option value="Sales">Sales</option>
+                            break;
+                        case "Sales":
+                            <option value="IT">IT</option>
+                            <option value="HR">HR</option>
+                            <option value="ClientService">Client Service</option>
+                            <option value="Sales" selected>Sales</option>
+                            break;
+                        default:
+                            <option value="IT">IT</option>
+                            <option value="HR">HR</option>
+                            <option value="ClientService">Client Service</option>
+                            <option value="Sales">Sales</option>
+                            break;
+                    }
+                }
+            </select>
+        </div>
+
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back</a>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>

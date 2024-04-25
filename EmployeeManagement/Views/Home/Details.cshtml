@@ -1,22 +1,51 @@
 ﻿@model EmployeeViewModel
 
+@{
+    ViewBag.Title = "Employee Details";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Ensure that the layout is set
+    ViewBag.Message = "Welcome To Employee Management System.";
+}
+
+@await Html.PartialAsync("_MessagePartial", Model)
+
 <div class="text-center">
 
     <div class="card" style="width: 18rem;">
-        @*<img class="card-img-top" src=".../100px180/" alt="Card image cap">*@
-        <img class="card-img-top" src="~/images/BankImage.svg" alt="Card image cap" asp-append-version="true" />
+        <img class="card-img-top" src="~/images/sampleBrandImageSmall.jpg" alt="Card image cap" asp-append-version="true" />
         <div class="card-body">
             <h5 class="card-title">Employee</h5>
             <p>Name: @Model.Name</p>
             <p>Department: @Model.Department</p>
             <p>Email: @Model.Email</p>
 
-
+            <button id="editButton" class="btn btn-primary">Edit</button>
+            <div id="editModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <div id="editPartialViewContainer"></div>
+                </div>
+            </div>
             <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back</a>
-            <a asp-controller="Home" asp-action="Edit" class="btn btn-primary">Edit</a>
-            <a asp-controller="Home" asp-action="Delete" class="btn btn-primary">Delete</a>
+            <a asp-controller="Home" asp-action="Remove" asp-route-id="@Model.Id" class="btn btn-primary">Delete</a>
         </div>
     </div>
 
-    
-    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#editButton").click(function () {
+                $.get("/Home/EditPartial/@Model.Id", function (data) {
+                    $("#editPartialViewContainer").html(data);
+                    $("#editModal").show();
+                });
+            });
+
+            $(".close").click(function () {
+                $("#editModal").hide();
+            });
+        });
+    </script>
+}

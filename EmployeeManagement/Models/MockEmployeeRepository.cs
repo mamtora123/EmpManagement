@@ -1,26 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EmployeeManagement.Models
 {
     public class MockEmployeeRepository 
     {
-        private readonly List<Employee> _empList;
+        private List<Employee> _empList;
+        private readonly List<UserModel> _userList;
 
         public MockEmployeeRepository()
         {
             _empList = new List<Employee>()
 
             {
-                new Employee(){Id=1, Name="Mark", Department =Dept.IT, Email="Mark@hotmil.com"},
-                new Employee(){Id=2, Name="Param", Department=Dept.IT, Email="param@hotmil.com"},
-                new Employee(){Id=3, Name="Tom", Department= Dept.HR, Email="Tom@hotmil.com"}
-
-
+                new Employee(){Id=1, Name="Mark", Department =Dept.IT, Email="Mark@hotmail.com"},
+                new Employee(){Id=2, Name="Param", Department=Dept.IT, Email="param@hotmail.com"},
+                new Employee(){Id=3, Name="Tom", Department= Dept.HR, Email="Tom@hotmail.com"}
             };
+
+            _userList = new List<UserModel>()
+
+            {
+                new UserModel(){Name="John", Email="john@gmail.com"},
+                new UserModel(){Name="Vicky", Email="vicky@hotmil.com"},
+                new UserModel(){Name="Mike", Email="mike@hotmil.com"},
+                new UserModel(){Name="Peter", Email="peter@yahoo.com"},
+                new UserModel(){Name="sam", Email="sam@yahoo.com"},
+            };
+        }
+
+        public async Task<List<UserModel>> GetAllUserAsync()
+        {
+            // Simulating asynchronous behavior by wrapping the list in a Task
+            await Task.Delay(100); // Simulate delay (optional)
+            return _userList;
         }
 
 
@@ -42,27 +56,36 @@ namespace EmployeeManagement.Models
 
         public Employee Update(Employee employeeUpdate)
         {
-            var emp = GetEmployee(employeeUpdate.Id);
-            if (employeeUpdate != null)
+            var emp = _empList.FirstOrDefault(e => e.Id == employeeUpdate.Id);
+            if (emp != null)
             {
-
                 emp.Name = employeeUpdate.Name;
                 emp.Email = employeeUpdate.Email;
                 emp.Department = employeeUpdate.Department;          
-            }
-
+            }            
             return emp;
         }
         public Employee Remove(int Id)
         {
-            var EmpRemove = GetEmployee(Id);
+            var empToRemove = _empList.FirstOrDefault(emp => emp.Id == Id);
+            Employee removedEmployee = null;
 
-            if (EmpRemove !=null)
+            if (empToRemove != null)
             {
-            _empList.Remove(EmpRemove);
+                // Create a copy of the list
+                var tempList = new List<Employee>(_empList);
+
+                // Remove the employee from the copy
+                tempList.Remove(empToRemove);
+
+                // Assign the removed employee to the original list
+                removedEmployee = empToRemove;
+
+                // Update the original list with the modified copy
+                _empList = tempList;
             }
 
-            return EmpRemove;
+            return removedEmployee;
         }
 
     }

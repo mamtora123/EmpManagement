@@ -1,0 +1,13 @@
+﻿<!-- Create a partial view _MessagePartial.cshtml -->
+<!-- In Views/Shared/_MessagePartial.cshtml -->
+@* Partial View: Create a reusable view component. *@
+@{
+    var message = ViewBag.Message;
+}
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-info" role="alert">
+        @message
+    </div>
+}
